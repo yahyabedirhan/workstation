@@ -1,0 +1,14 @@
+onboarding = false
+
+[ui.toast]
+delivery = "off"
+
+[ui.sound]
+enabled = false
+
+[ui]
+status_indicators = "dots"
+
+[theme]
+name = "gruvbox"
+auto_switch = false

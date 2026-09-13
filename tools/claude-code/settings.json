@@ -1,0 +1,76 @@
+{
+  "permissions": {
+    "deny": [
+      "Bash(rm -rf:*)",
+      "Bash(rm -r -f:*)",
+      "Bash(rm --no-preserve-root:*)",
+      "Bash(dd:*)",
+      "Bash(mkfs:*)",
+      "Bash(chmod -R 777:*)",
+      "Bash(git push --force:*)",
+      "Bash(git push --force-with-lease:*)",
+      "Bash(git reset --hard:*)",
+      "Bash(gh repo delete*)",
+      "Bash(gh repo edit*)",
+      "Bash(gh repo archive*)",
+      "Bash(gh repo unarchive*)",
+      "Bash(gh repo rename*)",
+      "Bash(gh repo deploy-key*)",
+      "Bash(gh repo autolink*)",
+      "Bash(gh ssh-key*)",
+      "Bash(gh gpg-key*)",
+      "Bash(sudo:*)",
+      "Bash(su:*)",
+      "Bash(bash -c:*)",
+      "Bash(sh -c:*)",
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(./secrets/**)",
+      "Read(~/.ssh/**)",
+      "Read(~/.aws/**)",
+      "Write(./.env)",
+      "Write(./.env.local)",
+      "Write(./secrets/**)"
+    ],
+    "ask": [
+      "Bash(gh api*)",
+      "Bash(gh secret*)",
+      "Bash(gh variable*)"
+    ]
+  },
+  "model": "opus",
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash '$HOME/.claude/hooks/herdr-agent-state.sh' session",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  },
+  "enabledPlugins": {
+    "skill-creator@claude-plugins-official": true,
+    "i-have-adhd@i-have-adhd": true
+  },
+  "extraKnownMarketplaces": {
+    "i-have-adhd": {
+      "source": {
+        "source": "github",
+        "repo": "ayghri/i-have-adhd"
+      }
+    }
+  },
+  "effortLevel": "medium",
+  "voice": {
+    "enabled": true,
+    "mode": "hold"
+  },
+  "theme": "dark",
+  "agentPushNotifEnabled": true,
+  "voiceEnabled": true
+}
