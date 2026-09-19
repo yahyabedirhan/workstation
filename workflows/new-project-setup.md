@@ -11,11 +11,23 @@ Bootstrap a repo with agent rules and the default skill set. Read [template/inde
    npx skills@latest add ayghri/i-have-adhd -y
    ```
    This writes `.agents/skills/`, `skills-lock.json`, and the `.claude/skills/` symlinks.
-4. Create `.gitignore` from [template/.gitignore](../template/.gitignore) and `README.md` from [template/README.md](../template/README.md), then fill in the project specifics.
-5. Commit in lowercase multi-line style (rule in `AGENTS.md`).
+4. Copy the workstation-owned [continue skill](../.agents/skills/continue/SKILL.md)
+   into `.agents/skills/continue/`, including its `index.md`, then add its
+   Claude Code symlink:
+   ```bash
+   ln -s ../../.agents/skills/continue .claude/skills/continue
+   ```
+5. Copy [handoff-workflow.md](handoff-workflow.md) to
+   `.workflows/handoff-workflow.md`. Create `.workflows/index.md` pointing to
+   it. Leave `HANDOFF.md` absent until `/handoff` creates the first active
+   pointer.
+6. Create `.gitignore` from [template/.gitignore](../template/.gitignore) and `README.md` from [template/README.md](../template/README.md), then fill in the project specifics.
+7. Commit in lowercase multi-line style (rule in `AGENTS.md`).
 
 ## Checklist
 
 - `CLAUDE.md -> AGENTS.md`
 - `ls .claude/skills` lists `grill-me`, `i-have-adhd`, `show-me` among others
+- `.claude/skills/continue -> ../../.agents/skills/continue`
+- `.workflows/handoff-workflow.md` exists and `AGENTS.md` links to it
 - `skills-lock.json` committed
