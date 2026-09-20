@@ -21,3 +21,25 @@ Revisit:
 
 - Whether `template/` needs to become `templates/<kind>/` once a second template appears.
 - Fill `notes/concepts/` after reviewing the async-starter explainers.
+
+## 2026-09-20
+
+Tried running several Claude Code sessions on one repo at once, each in its own git worktree, driven from a single herdr pane. Written up as [herdr-treehouse-worktrees](concepts/herdr-treehouse-worktrees.md).
+
+What happened:
+
+- Controlled herdr from inside an agent pane using the JSON CLI: created tabs with `--cwd` and `--no-focus`, started agents with `herdr agent start`, prompted all three in parallel, waited, read output, closed tabs. The `/herdr` skill in `~/.claude/skills/herdr` covers the rest of the CLI.
+- Installed treehouse. `go install github.com/kunchenguid/treehouse@latest` gave v1.8.0 because the module path has no `/v2` suffix. Downloaded the v2.3.0 darwin-arm64 release binary into `~/go/bin/treehouse` by hand and added `export PATH="$HOME/go/bin:$PATH"` to `~/.zshrc`. Skipped the official `install.sh`: `~/.local/bin` is not on PATH so it would have picked `/usr/local/bin` with sudo.
+- Three leases (`treehouse get --lease --lease-holder cc-wtN --json`) created a pool at `~/.treehouse/<repo>-<hash>/<N>/<repo>`, detached HEAD at `main`. Each agent wrote an untracked demo file that landed only in its own worktree; the main checkout stayed clean. `treehouse status` showed the pids in each slot.
+- Cleanup was `herdr tab close` per tab then `treehouse return --force <path>` per worktree. `return --all` from the README is not in v2.3.0.
+
+Decisions:
+
+- `zstyle ':omz:update' mode auto` before sourcing oh-my-zsh: the update prompt was swallowing the first keystrokes typed into a fresh pane, so `claude` became the answer to the prompt instead of a command.
+
+Revisit:
+
+- How branches from worktrees flow back (PR per worktree, or merge into the main checkout).
+- Set up `treehouse.toml` or `.worktreeinclude` so gitignored files like `node_modules` get seeded; decide the list per repo.
+- Whether `--lease-holder` should encode the herdr pane or agent name so `treehouse status` and `herdr agent list` line up.
+- `herdr agent read` cannot recover output scrolled off the alternate screen; the fallback is asking the agent to write to a file. Look for a better way.
